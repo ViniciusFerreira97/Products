@@ -1,0 +1,3 @@
+﻿client;sku;quantity
+we_have_it_all;54_AIIK;40
+we_have_it_all;44_GARO;36

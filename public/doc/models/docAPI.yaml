@@ -1,0 +1,375 @@
+swagger: "2.0"
+info:
+  description: "API de funcionalidades do We Have It All. Para utilizar as rotas, 
+    basta concatenar sua base_url com algumas das rotas abaixo, respeitando as regras individuais. Ex:http://127.0.0.1:8000/api/product/list"
+  version: "1.0.0"
+  title: "API We Have It All"
+
+schemes:
+- "http"
+
+tags:
+  - name: Product
+    description: Rotas relacionadas aos produtos
+  - name: Reserve
+    description: Rotas relacionadas as reservas
+  - name: Client
+    description: Rotas relacionadas aos clientes
+
+paths:
+  /api/product/list:
+    get:
+      tags:
+      - "Product"
+      summary: ""
+      description: "Realiza a Listagem de todos os produtos"
+      operationId: "getProductAll"        
+
+      produces:
+      - "application/json"
+
+      responses:
+        '200':
+          description: "OK"
+          examples:
+            application/json:
+              {
+                "id_product":1,
+                "id_client":1,
+                "sku_product":"13_OCJG",
+                "quantity_product":20,
+                "nm_client":"we_have_it_all"
+
+              }
+        '404':
+          description: "NOT FOUND"
+        '500':
+          description: "Internal Server Error"
+
+  /api/product/list/{id_product}:
+    get:
+      tags:
+      - "Product"
+      summary: ""
+      description: "Realiza a Listagem de um produto específico"
+      operationId: "getProduct"        
+
+      produces:
+      - "application/json"
+
+      responses:
+        '200':
+          description: "OK"
+          examples:
+            application/json:
+              {
+                "id_product": 1,
+                "id_client": 1,
+                "sku_product": "13_OCJG",
+                "quantity_product": 10,
+                "nm_client": "we_have_it_all"
+
+              }
+        '404':
+          description: "NOT FOUND"
+        '500':
+          description: "Internal Server Error"
+
+  /api/product/create/:
+    post:
+      tags:
+      - "Product"
+      summary: ""
+      description: "Realiza o cadastro de um novo produto"
+      operationId: "cadastrarProduto"
+      consumes:
+      - "multipart/form-data"
+    
+      parameters:
+        - in: formData
+          name: id_client
+          description: "ID do cliente"
+          required: true
+          type: int
+
+        - in: formData
+          name: sku_product
+          description: "Descrição do produto"
+          required: true
+          type: string
+
+        - in: formData
+          name: quantity_product
+          description: "Quantidade do produto"
+          required: true
+          type: int
+          
+      produces:
+      - "application/json"
+
+      responses:
+        '201':
+          description: OK
+          examples:
+            application/json:
+              {
+                "id_client": 1,
+                "sku_product": "13_OCJG",
+                "quantity_product": 50,
+                "id_product": 3,
+                "nm_client": "we_have_it_all"
+              }
+
+        '404':
+          description: "NOT FOUND"
+        '500':
+          description: "Internal Server Error"
+
+  /api/product/import/:
+    post:
+      tags:
+      - "Product"
+      summary: ""
+      description: "Realiza a importação de um arquivo CSV de produtos"
+      operationId: "importarProduto"
+      consumes:
+      - "multipart/form-data"
+    
+      parameters:
+        - in: formData
+          name: file
+          description: "Arquivo CSV"
+          required: true
+          type: file
+          
+      produces:
+      - "application/json"
+
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: "NOT FOUND"
+        '500':
+          description: "Internal Server Error"
+
+  /api/product/update/:
+    put:
+      tags:
+      - "Product"
+      summary: ""
+      description: "Realiza a alteração na quantidade de um produto já cadastrado"
+      operationId: "editaProduto"
+      consumes:
+      - "multipart/form-data"
+    
+      parameters:
+        - in: formData
+          name: id_client
+          description: "ID do cliente"
+          required: true
+          type: int
+
+        - in: formData
+          name: quantity_product
+          description: "Quantidade do produto"
+          required: true
+          type: int
+          
+      produces:
+      - "application/json"
+
+      responses:
+        '200':
+          description: OK
+          examples:
+            application/json:
+              {
+                "id_client": 1,
+                "sku_product": "13_OCJG",
+                "quantity_product": 50,
+                "id_product": 3,
+                "nm_client": "we_have_it_all"
+              }
+        '404':
+          description: "NOT FOUND"
+        '500':
+          description: "Internal Server Error"
+
+  /api/product/delete/{id_product}:
+    delete:
+      tags:
+      - "Product"
+      summary: ""
+      description: "Deleta da base de dados o produto enviado."
+      operationId: "produtoApagar"
+
+      responses:
+        '204':
+          description: "No Content"
+        '404':
+          description: "NOT FOUND"
+        '500':
+          description: "Internal Server Error"
+
+  /api/reserve/list:
+    get:
+      tags:
+      - "Reserve"
+      summary: ""
+      description: "Realiza a listagem de todos as reservas"
+      operationId: "getReserveAll"        
+
+      produces:
+      - "application/json"
+
+      responses:
+        '200':
+          description: "OK"
+          examples:
+            application/json:
+              {
+                "id_reserve": 1,
+                "id_product": 1,
+                "sku_product":"13_OCJG",
+                "quantity_reserve": 5
+              }
+        '404':
+          description: "NOT FOUND"
+        '500':
+          description: "Internal Server Error"
+
+  /api/reserve/create/:
+    post:
+      tags:
+      - "Reserve"
+      summary: ""
+      description: "Realiza o cadastro de uma nova reserva"
+      operationId: "cadastrarReserva"
+      consumes:
+      - "multipart/form-data"
+    
+      parameters:
+        - in: formData
+          name: id_product
+          description: "ID do produto"
+          required: true
+          type: int
+
+        - in: formData
+          name: quantity_reserve
+          description: "Quantidade da reserva"
+          required: true
+          type: int
+          
+      produces:
+      - "application/json"
+
+      responses:
+        '201':
+          description: OK
+          examples:
+            application/json:
+              {
+                "id_reserve": 1,
+                "id_product": 1,
+                "quantity_reserve": 9,
+                "sku_product": "13_OCJG",
+              }
+
+        '404':
+          description: "NOT FOUND"
+        '500':
+          description: "Internal Server Error"
+
+  /api/reserve/delete/{id_reserve}:
+    delete:
+      tags:
+      - "Reserve"
+      summary: ""
+      description: "Deleta da base de dados a reserve enviada."
+      operationId: "reservaApagar"
+
+      responses:
+        '204':
+          description: "No Content"
+        '404':
+          description: "NOT FOUND"
+        '500':
+          description: "Internal Server Error"
+
+  /api/client/list:
+    get:
+      tags:
+      - "Client"
+      summary: ""
+      description: "Realiza a listagem de todos os clientes"
+      operationId: "getClientesAll"        
+
+      produces:
+      - "application/json"
+
+      responses:
+        '200':
+          description: "OK"
+          examples:
+            application/json:
+              {
+                "id_client": 1,
+                "nm_client": "we_have_it_all"
+              }
+        '404':
+          description: "NOT FOUND"
+        '500':
+          description: "Internal Server Error"
+
+  /api/client/create/:
+    post:
+      tags:
+      - "Client"
+      summary: ""
+      description: "Realiza o cadastro de um novo cliente"
+      operationId: "cadastrarCliente"
+      consumes:
+      - "multipart/form-data"
+    
+      parameters:
+        - in: formData
+          name: nm_client
+          description: "Nome do Cliente"
+          required: true
+          type: int
+          
+      produces:
+      - "application/json"
+
+      responses:
+        '201':
+          description: OK
+          examples:
+            application/json:
+              {
+                "id_client": 1,
+                "nm_client": "we_have_it_all"
+              }
+
+        '404':
+          description: "NOT FOUND"
+        '500':
+          description: "Internal Server Error"
+
+  /api/reserve/delete/{id_client}:
+    delete:
+      tags:
+      - "Client"
+      summary: ""
+      description: "Deleta da base de dados o cliente enviada."
+      operationId: "clienteApagar"
+
+      responses:
+        '204':
+          description: "No Content"
+        '404':
+          description: "NOT FOUND"
+        '500':
+          description: "Internal Server Error"
